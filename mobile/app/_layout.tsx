@@ -1,0 +1,11 @@
+import { ClerkProvider } from '@clerk/clerk-expo'
+import { Slot } from 'expo-router'
+import { tokenCache } from '@clerk/clerk-expo/token-cache'
+
+function RootLayoutNav() {
+  return (
+    <ClerkProvider tokenCache={tokenCache}>
+      <Slot />
+    </ClerkProvider>
+  )
+}
