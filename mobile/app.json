@@ -45,6 +45,11 @@
     "experiments": {
       "typedRoutes": true,
       "reactCompiler": true
+    },
+    "extra": {
+      "expoGo": {
+        "trustHost": true
+      }
     }
   }
 }

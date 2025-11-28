@@ -1,7 +1,7 @@
-import { API_URL } from "@env";
-console.log("API_URL:", API_URL);
+import { EXPO_PUBLIC_API_URL } from "@env";
+
 export async function loginRequest(email, password) {
-    const res = await fetch(`${API_URL}/auth/login`, {
+    const res = await fetch(`${EXPO_PUBLIC_API_URL}/auth/login`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
