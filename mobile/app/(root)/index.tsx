@@ -1,14 +1,20 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { View, Text } from "react-native";
 import { useAuth } from "@/context/AuthContext";
 import { Link } from "expo-router";
 import Header from "@/components/Header";
 import SideMenu from "@/components/SideMenu";
+import PageLoader from "../../components/PageLoader";
+import { styles } from "@/assets/styles/home.styles";
 
 export default function Page() {
-  const { user, token } = useAuth();
+  const { user, token, loading } = useAuth();
   const [menuVisible, setMenuVisible] = useState(false);
 
+  if (loading) {
+    return <PageLoader />;
+  }
+  
   if (!token) {
     return (
       <View>
@@ -24,7 +30,7 @@ export default function Page() {
   }
 
   return (
-    <View style={{ flex: 1 }}>
+    <View style={styles.container}>
       <Header onOpenMenu={() => setMenuVisible(true)} />
 
       <SideMenu
@@ -32,8 +38,8 @@ export default function Page() {
         onClose={() => setMenuVisible(false)}
       />
 
-      <View style={{ padding: 20 }}>
-        <Text>Hola {user?.email}</Text>
+      <View style={styles.welcomeContainer}>
+        <Text style={styles.usernameText}>Hola {user?.email}</Text>
       </View>
     </View>
   );

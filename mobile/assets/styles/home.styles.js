@@ -16,8 +16,10 @@ export const styles = StyleSheet.create({
         justifyContent: "space-between",
         alignItems: "center",
         marginBottom: 20,
-        paddingHorizontal: 0,
+        paddingHorizontal: 8,
         paddingVertical: 12,
+        borderBottomWidth: 1,
+        borderBottomColor: COLORS.primary,
     },
     headerLeft: {
         flex: 1,
@@ -28,8 +30,43 @@ export const styles = StyleSheet.create({
         width: 75,
         height: 75,
     },
+    avatar: {
+        width: 36,
+        height: 36,
+        borderRadius: 20,
+        backgroundColor: "#007BFF",
+        justifyContent: "center",
+        alignItems: "center",
+    },
+    avatarText: {
+        color: "#fff",
+        fontWeight: "bold",
+        fontSize: 16,
+    },
+    overlay: {
+        flex: 1,
+    },
+    menu: {
+        position: "absolute",
+        top: 70,
+        right: 20,
+        backgroundColor: "#fff",
+        paddingVertical: 8,
+        borderRadius: 8,
+        elevation: 5,
+        width: 150,
+    },
+    menuItem: {
+        paddingVertical: 12,
+        paddingHorizontal: 15,
+    },
+    menuText: {
+        fontSize: 16,
+        color: "#333",
+    },
     welcomeContainer: {
         flex: 1,
+        paddingHorizontal: 35,
     },
     welcomeText: {
         fontSize: 14,

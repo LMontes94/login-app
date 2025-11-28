@@ -1,7 +1,8 @@
 import { useState } from "react";
-import { View, Text, TouchableOpacity, StyleSheet, Modal } from "react-native";
+import { View, Text, TouchableOpacity, Modal } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { useAuth } from "@/context/AuthContext";
+import { styles } from "@/assets/styles/home.styles";
 
 export default function Header({ onOpenMenu }) {
   const { user, logout } = useAuth();
@@ -57,48 +58,3 @@ export default function Header({ onOpenMenu }) {
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  header: {
-    flexDirection: "row",
-    alignItems: "center",
-    paddingHorizontal: 16,
-    paddingVertical: 12,
-    backgroundColor: "#fff",
-    elevation: 4,
-  },
-  avatar: {
-    width: 36,
-    height: 36,
-    borderRadius: 20,
-    backgroundColor: "#007BFF",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  avatarText: {
-    color: "#fff",
-    fontWeight: "bold",
-    fontSize: 16,
-  },
-  overlay: {
-    flex: 1,
-  },
-  menu: {
-    position: "absolute",
-    top: 70,
-    right: 20,
-    backgroundColor: "#fff",
-    paddingVertical: 8,
-    borderRadius: 8,
-    elevation: 5,
-    width: 150,
-  },
-  menuItem: {
-    paddingVertical: 12,
-    paddingHorizontal: 15,
-  },
-  menuText: {
-    fontSize: 16,
-    color: "#333",
-  },
-});
