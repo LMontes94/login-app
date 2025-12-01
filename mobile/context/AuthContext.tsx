@@ -44,7 +44,6 @@ export const AuthProvider = ({ children }) => {
       if (!res.ok) {
         return { ok: false, message: data.message || "Error al iniciar sesión" };
       }
-      console.log(data.user)
       setToken(data.token);
       setUser(data.user);
 

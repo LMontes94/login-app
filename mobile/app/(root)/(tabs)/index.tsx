@@ -4,7 +4,7 @@ import { useAuth } from "@/context/AuthContext";
 import { Link } from "expo-router";
 import Header from "@/components/Header";
 import SideMenu from "@/components/SideMenu";
-import PageLoader from "../../components/PageLoader";
+import PageLoader from "../../../components/PageLoader";
 import { styles } from "@/assets/styles/home.styles";
 
 export default function Page() {
