@@ -5,10 +5,12 @@ const router = express.Router();
 const usersRoutes = require("./users.routes");
 const authRoutes = require("./auth.routes");
 const dashboardRoutes = require("./dashboard.routes");
+const actividadRoutes = require("./actividad.routes")
 
 // Unificar rutas
 router.use("/users", usersRoutes);
 router.use("/auth", authRoutes);
 
-router.use("/dashboard",dashboardRoutes);
+router.use("/dashboard", dashboardRoutes);
+router.use("/actividad", actividadRoutes);
 module.exports = router;
