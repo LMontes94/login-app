@@ -1,4 +1,4 @@
-import { HomeIcon } from "@/components/Icons";
+import { HomeIcon, ActividadIcon } from "@/components/Icons";
 import { COLORS } from "@/constants/colors";
 import {Tabs,Redirect} from "expo-router";
 import { useAuth } from "@/context/AuthContext";
@@ -19,7 +19,7 @@ export default function TabsLayout(){
                 tabBarInactiveTintColor: "#999",
             }}
         >
-             <Tabs.Screen
+        <Tabs.Screen
         name="index"
         options={{
           title: "Inicio",
@@ -28,6 +28,15 @@ export default function TabsLayout(){
           ),
         }}
       />
-        </Tabs>
+      <Tabs.Screen
+         name="actividad"
+          options={{
+          title: "Actividad",
+          tabBarIcon: ({ color }) => (
+           <ActividadIcon color={color} />
+          ),
+        }}
+      />
+      </Tabs>
     );
 }
