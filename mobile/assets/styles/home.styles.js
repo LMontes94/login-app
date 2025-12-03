@@ -65,8 +65,9 @@ export const styles = StyleSheet.create({
         color: "#333",
     },
     welcomeContainer: {
-        flex: 1,
-        paddingHorizontal: 35,
+        paddingHorizontal: 50,
+        marginTop:10,
+        marginBottom:35,
     },
     welcomeText: {
         fontSize: 14,
@@ -298,4 +299,39 @@ export const styles = StyleSheet.create({
     transactionsListContent: {
         paddingBottom: 20,
     },
+    statCard: {
+    backgroundColor: COLORS.card,
+    borderRadius: 16,
+    padding: 20,
+    marginBottom: 20,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    shadowColor: COLORS.shadow,
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
+},
+statCardContent: {
+    flexDirection: "column",
+},
+statCardTitle: {
+    fontSize: 15,
+    color: COLORS.textLight,
+},
+statCardValue: {
+    fontSize: 32,
+    fontWeight: "700",
+    color: COLORS.text,
+    marginTop: 4,
+},
+statCardIcon: {
+    width: 55,
+    height: 55,
+    borderRadius: 28,
+    backgroundColor: COLORS.primary,
+    justifyContent: "center",
+    alignItems: "center",
+},
 });
