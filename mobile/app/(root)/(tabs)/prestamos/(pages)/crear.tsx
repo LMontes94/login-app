@@ -3,12 +3,13 @@ import { View, Text, TextInput, TouchableOpacity  } from "react-native";
 import { createPrestamo } from "@/services/prestamo.service";
 import { useAuth } from "@/context/AuthContext";
 import { styles } from "@/assets/styles/prestamo.styles";
-
+import { useRouter } from "expo-router";
 export default function CrearPrestamoScreen() {
   const { token } = useAuth();
   const [idPrestatario, setIdPrestatario] = useState("");
   const [idEquipo, setIdEquipo] = useState("");
   const [step, setStep] = useState(1);
+  const router = useRouter();
 
   const confirmar = async () => {
     await createPrestamo(token, {
@@ -24,7 +25,7 @@ export default function CrearPrestamoScreen() {
   return (
     <View style={styles.container}>
       {step === 1 && (
-        <>
+        <>         
           <Text style={styles.titleText}>Ingresá el ID del prestatario:</Text>
           <TextInput
             value={idPrestatario}
@@ -34,6 +35,9 @@ export default function CrearPrestamoScreen() {
           />
           <TouchableOpacity style={styles.backButton} onPress={() => setStep(2)} >
             <Text style={styles.backButtonText}>Continuar</Text>
+          </TouchableOpacity>
+           <TouchableOpacity style={styles.backButton} onPress={() => router.push("/(root)/(tabs)/prestamos")} >
+            <Text style={styles.backButtonText}>Volver</Text>
           </TouchableOpacity>
         </>
       )}
