@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { View, Text, ActivityIndicator } from "react-native";
+import { View, Text } from "react-native";
 import { useAuth } from "@/context/AuthContext";
 import { Link } from "expo-router";
 import Header from "@/components/Header";
@@ -46,7 +46,7 @@ export default function Page() {
   };
 
   if (!stats) {
-    return <ActivityIndicator size="large" />;
+    return <PageLoader />;
   }
 
   return (

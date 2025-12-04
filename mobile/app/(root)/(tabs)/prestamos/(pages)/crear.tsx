@@ -1,7 +1,8 @@
 import { useState } from "react";
-import { View, Text, TextInput, Button } from "react-native";
+import { View, Text, TextInput, TouchableOpacity  } from "react-native";
 import { createPrestamo } from "@/services/prestamo.service";
 import { useAuth } from "@/context/AuthContext";
+import { styles } from "@/assets/styles/prestamo.styles";
 
 export default function CrearPrestamoScreen() {
   const { token } = useAuth();
@@ -21,31 +22,37 @@ export default function CrearPrestamoScreen() {
   };
 
   return (
-    <View style={{ padding: 18 }}>
+    <View style={styles.container}>
       {step === 1 && (
         <>
-          <Text>Ingresá el ID del prestatario:</Text>
+          <Text style={styles.titleText}>Ingresá el ID del prestatario:</Text>
           <TextInput
             value={idPrestatario}
             onChangeText={setIdPrestatario}
             keyboardType="numeric"
-            style={{ borderWidth: 1, padding: 8, marginTop: 8 }}
+            style={styles.inputPrestamo}
           />
-          <Button title="Continuar" onPress={() => setStep(2)} />
+          <TouchableOpacity style={styles.backButton} onPress={() => setStep(2)} >
+            <Text style={styles.backButtonText}>Continuar</Text>
+          </TouchableOpacity>
         </>
       )}
 
       {step === 2 && (
         <>
-          <Text>Ingresá el ID del equipo:</Text>
+          <Text style={styles.titleText}>Ingresá el ID del equipo:</Text>
           <TextInput
             value={idEquipo}
             onChangeText={setIdEquipo}
             keyboardType="numeric"
-            style={{ borderWidth: 1, padding: 8, marginTop: 8 }}
+            style={styles.inputPrestamo}
           />
-          <Button title="Crear préstamo" onPress={confirmar} />
-          <Button title="Volver" onPress={() => setStep(1)} />
+          <TouchableOpacity style={styles.backButton} onPress={confirmar} >
+            <Text style={styles.backButtonText}>Confirmar préstamo</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.backButton} onPress={() => setStep(1)} >
+            <Text style={styles.backButtonText}>Volver</Text>
+          </TouchableOpacity>
         </>
       )}
     </View>

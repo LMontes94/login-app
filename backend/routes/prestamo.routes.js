@@ -1,6 +1,6 @@
 const express = require("express");
 const PrestamoController = require("../src/controllers/prestamo.controller");
-const auth = require("../src/middlewares/auth.middlewareprefiero");
+const auth = require("../src/middlewares/auth.middleware");
 
 const router = express.Router();
 

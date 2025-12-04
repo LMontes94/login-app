@@ -2,7 +2,7 @@ const API_URL = process.env.EXPO_PUBLIC_API_URL;
 
 export async function getPrestamosActivos(token) {
     try {
-        const res = await fetch(`${API_URL}/prestamos/activos`, {
+        const res = await fetch(`${API_URL}/prestamo/activos`, {
             headers: {
                 Authorization: `Bearer ${token}`,
             },
@@ -20,7 +20,7 @@ export async function getPrestamosActivos(token) {
 
 export async function createPrestamo(token, { id_prestatario, id_equipo }) {
     try {
-        const res = await fetch(`${API_URL}/prestamos/create`, {
+        const res = await fetch(`${API_URL}/prestamo/create`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",

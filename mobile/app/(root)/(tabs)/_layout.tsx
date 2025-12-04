@@ -1,4 +1,4 @@
-import { HomeIcon, ActividadIcon } from "@/components/Icons";
+import { HomeIcon, ActividadIcon, PrestamoIcon } from "@/components/Icons";
 import { COLORS } from "@/constants/colors";
 import {Tabs,Redirect} from "expo-router";
 import { useAuth } from "@/context/AuthContext";
@@ -34,6 +34,16 @@ export default function TabsLayout(){
           title: "Actividad",
           tabBarIcon: ({ color }) => (
            <ActividadIcon color={color} />
+          ),
+        }}
+      />
+
+      <Tabs.Screen
+         name="prestamos"
+          options={{
+          title: "Prestamos",
+          tabBarIcon: ({ color }) => (
+           <PrestamoIcon color={color} />
           ),
         }}
       />
