@@ -1,8 +1,8 @@
 import PageLoader from "@/components/PageLoader";
 import { useEffect, useState } from "react";
-import { View, Text, ScrollView, TouchableOpacity } from "react-native";
+import { View, Text, ScrollView, TouchableOpacity, Alert } from "react-native";
 import { useRouter } from "expo-router";
-import { getPrestamosActivos } from "@/services/prestamo.service";
+import { getPrestamosActivos, devolverPrestamo } from "@/services/prestamo.service";
 import { useAuth } from "@/context/AuthContext";
 import { styles } from "@/assets/styles/prestamo.styles";
 import { formatDate } from "@/lib/utils";
@@ -31,7 +31,30 @@ export default function PrestamosActivosScreen() {
   }, [token]);
 
   if (loading) return <PageLoader />;
-  
+  const handleDevolver = async (id_prestamo) => {
+    Alert.alert(
+      "Confirmar devolución",
+      "¿Seguro que el equipo fue devuelto?",
+      [
+        { text: "Cancelar", style: "cancel" },
+        {
+          text: "Sí, devolver",
+          onPress: async () => {
+            try {
+              const ok = await devolverPrestamo(id_prestamo, token);
+              if (ok) {
+                // Eliminamos el item del estado local
+                setItems(prev => prev.filter(p => p.id_prestamo !== id_prestamo));
+              }
+            } catch (error) {
+              Alert.alert("Error", "No se pudo devolver el préstamo");
+            }
+          },
+        },
+      ]
+    );
+  };
+
    if (!items.length) {
     return (
       <View style={ styles.sinActividadContainer}>
@@ -61,6 +84,13 @@ export default function PrestamosActivosScreen() {
           <Text style={styles.prestatarioText}>{p.prestatario}</Text>
           <Text style={styles.equipoText}>Equipo: {p.equipo}</Text>
           <Text style={styles.dateText}>Fecha: {formatDate(p.fecha)}</Text>
+
+          <TouchableOpacity
+            style={styles.returnButton}
+            onPress={() => handleDevolver(p.id_prestamo)}
+          >
+            <Text style={styles.returnButtonText}>Marcar como devuelto</Text>
+          </TouchableOpacity>
         </View>
       ))}
     </ScrollView>

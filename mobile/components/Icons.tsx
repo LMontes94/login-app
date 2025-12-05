@@ -1,4 +1,4 @@
-import { FontAwesome } from "@expo/vector-icons";
+import { FontAwesome,Ionicons } from "@expo/vector-icons";
 import { COLORS } from "../constants/colors";
 
 export const HomeIcon = (props) =>(
@@ -19,4 +19,8 @@ export const PlusIcon = (props) =>(
 
 export const ListIcon = (props) =>(
     <FontAwesome name="list-ul" size={24} color={COLORS} {...props} />
+);
+
+export const BackIcon = (props) =>(
+    <Ionicons name="return-up-back" size={24} color={COLORS} {...props} />
 );

@@ -50,3 +50,23 @@ export async function createPrestamo(token, { id_prestatario, id_equipo }) {
         };
     }
 }
+
+export async function devolverPrestamo(id, token) {
+    try {
+        const res = await fetch(`${API_URL}/prestamo/devolver/${id}`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+            },
+        });
+
+        if (!res.ok) throw new Error("No se pudo devolver el préstamo");
+
+        const data = await res.json();
+        return data.ok;
+    } catch (err) {
+        console.error("devolverPrestamo Error:", err);
+        throw err;
+    }
+}

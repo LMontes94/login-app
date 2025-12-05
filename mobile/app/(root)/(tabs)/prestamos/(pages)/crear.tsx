@@ -4,6 +4,7 @@ import { createPrestamo } from "@/services/prestamo.service";
 import { useAuth } from "@/context/AuthContext";
 import { styles } from "@/assets/styles/prestamo.styles";
 import { useRouter } from "expo-router";
+import { BackIcon } from "@/components/Icons";
 export default function CrearPrestamoScreen() {
   const { token } = useAuth();
   const [idPrestatario, setIdPrestatario] = useState("");
@@ -33,12 +34,14 @@ export default function CrearPrestamoScreen() {
             keyboardType="numeric"
             style={styles.inputPrestamo}
           />
-          <TouchableOpacity style={styles.backButton} onPress={() => setStep(2)} >
-            <Text style={styles.backButtonText}>Continuar</Text>
-          </TouchableOpacity>
-           <TouchableOpacity style={styles.backButton} onPress={() => router.push("/(root)/(tabs)/prestamos")} >
-            <Text style={styles.backButtonText}>Volver</Text>
-          </TouchableOpacity>
+          <View style={styles.containerButtons}>
+            <TouchableOpacity style={styles.backButton} onPress={() => router.push("/(root)/(tabs)/prestamos")} >
+                <Text style={styles.backButtonText}><BackIcon/></Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.backButton} onPress={() => setStep(2)} >
+              <Text style={styles.backButtonText}>Continuar</Text>
+            </TouchableOpacity>
+          </View>
         </>
       )}
 
@@ -55,7 +58,7 @@ export default function CrearPrestamoScreen() {
             <Text style={styles.backButtonText}>Confirmar préstamo</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.backButton} onPress={() => setStep(1)} >
-            <Text style={styles.backButtonText}>Volver</Text>
+            <Text style={styles.backButtonText}><BackIcon/></Text>
           </TouchableOpacity>
         </>
       )}
