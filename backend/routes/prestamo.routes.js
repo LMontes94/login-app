@@ -5,6 +5,7 @@ const auth = require("../src/middlewares/auth.middleware");
 const router = express.Router();
 
 router.post("/create", auth, PrestamoController.crear);
-router.get("/activos", auth, PrestamoController.activos);
+router.get("/activos", PrestamoController.activos);
+router.put("/devolver/:id", PrestamoController.devolverPrestamo);
 
 module.exports = router;

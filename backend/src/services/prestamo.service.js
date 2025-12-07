@@ -27,10 +27,25 @@ class PrestamoService {
         INNER JOIN equipos e ON e.id_equipo = p.id_equipo
         WHERE p.estado = 1
         ORDER BY p.fecha DESC
-    `);
+        `);
 
-    return rows;
-}
+        return rows;
+    }
+
+    static async devolver(id) {
+        try {
+            const [result] = await db.query(
+                `UPDATE prestamos SET estado = 0, fecha_devolucion = NOW() WHERE id_prestamo = ?`,
+                [id]
+            );
+
+            return result.affectedRows > 0;
+        } catch (err) {
+            console.error("prestamoService.devolver error:", err);
+            return false;
+        }
+    }
+
 }
 
 module.exports = PrestamoService;

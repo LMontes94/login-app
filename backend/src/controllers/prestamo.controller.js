@@ -28,6 +28,33 @@ class PrestamoController {
             return res.status(500).json({ ok: false, error: "Error al obtener préstamos" });
         }
     }
+
+    static async devolverPrestamo(req, res) {
+    try {
+        const { id } = req.params;
+
+        const ok = await PrestamoService.devolver(id);
+
+        if (!ok) {
+            return res.status(400).json({
+                ok: false,
+                message: "No se pudo devolver el préstamo",
+            });
+        }
+
+        return res.json({
+            ok: true,
+            message: "Préstamo devuelto correctamente",
+        });
+    } catch (error) {
+        console.error("Error devolver préstamo:", error);
+        return res.status(500).json({
+            ok: false,
+            message: "Error interno",
+        });
+    }
 }
+}
+
 
 module.exports = PrestamoController;
