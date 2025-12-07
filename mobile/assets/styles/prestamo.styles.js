@@ -84,8 +84,8 @@ export const styles = StyleSheet.create({
     },
     returnButton: {
         backgroundColor: COLORS.primary,
-        padding: 10,
-        marginTop: 10,
+        padding: 20,
+        marginTop: 15,
         borderRadius: 8,
         alignItems: "center",
     },
@@ -93,12 +93,17 @@ export const styles = StyleSheet.create({
         color: COLORS.white,
         fontWeight: "600",
     },
-    card: {
+    cardActivos: {
         backgroundColor: COLORS.white,
         padding: 14,
         borderRadius: 14,
         marginBottom: 12,
-        elevation: 2
+        elevation: 2,
+        flexDirection: "row",
+        justifyContent: "space-between",
+        alignItems: "center",
     },
-
+    cardInfo:{
+        flex:1,
+    }
 });

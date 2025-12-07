@@ -6,6 +6,7 @@ import { getPrestamosActivos, devolverPrestamo } from "@/services/prestamo.servi
 import { useAuth } from "@/context/AuthContext";
 import { styles } from "@/assets/styles/prestamo.styles";
 import { formatDate } from "@/lib/utils";
+import { BackIcon } from "@/components/Icons";
 
 export default function PrestamosActivosScreen() {
   const { token } = useAuth();
@@ -43,7 +44,7 @@ export default function PrestamosActivosScreen() {
             try {
               const ok = await devolverPrestamo(id_prestamo, token);
               if (ok) {
-                // Eliminamos el item del estado local
+              
                 setItems(prev => prev.filter(p => p.id_prestamo !== id_prestamo));
               }
             } catch (error) {
@@ -79,18 +80,20 @@ export default function PrestamosActivosScreen() {
       {items.map((p) => (
         <View
           key={p.id_prestamo}
-          style={styles.container}
+          style={styles.cardActivos}
         >
-          <Text style={styles.prestatarioText}>{p.prestatario}</Text>
-          <Text style={styles.equipoText}>Equipo: {p.equipo}</Text>
-          <Text style={styles.dateText}>Fecha: {formatDate(p.fecha)}</Text>
-
-          <TouchableOpacity
-            style={styles.returnButton}
-            onPress={() => handleDevolver(p.id_prestamo)}
-          >
-            <Text style={styles.returnButtonText}>Marcar como devuelto</Text>
-          </TouchableOpacity>
+          <View style={styles.cardInfo}>
+            <Text style={styles.prestatarioText}>{p.prestatario}</Text>
+            <Text style={styles.equipoText}>Equipo: {p.equipo}</Text>
+            <Text style={styles.dateText}>Fecha: {formatDate(p.fecha)}</Text>
+          </View>
+            <TouchableOpacity
+              style={styles.returnButton}
+              onPress={() => handleDevolver(p.id_prestamo)}
+            >
+                <BackIcon style={styles.returnButtonText}/>
+            </TouchableOpacity>
+          
         </View>
       ))}
     </ScrollView>
