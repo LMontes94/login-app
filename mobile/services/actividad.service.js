@@ -17,9 +17,9 @@ export async function getActividades(token) {
     }
 }
 
-export async function createActividad(token, detalle) {
+export async function registrarActividad(token, detalle) {
     try {
-        const res = await fetch(`${API_URL}/actividad/create`, {
+        const res = await fetch(`${API_URL}/actividad/registrar`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -28,12 +28,11 @@ export async function createActividad(token, detalle) {
             body: JSON.stringify({ detalle }),
         });
 
-        if (!res.ok) {
-            throw new Error("Error al crear actividad");
-        }
+        const data = await res.json();
 
-        return await res.json();
+        if (!res.ok) throw new Error("Error al crear actividad");
 
+        return data;
     } catch (error) {
         console.error("ActividadService Error:", error);
         throw error;

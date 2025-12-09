@@ -11,6 +11,8 @@ import { useBuscarEquipos } from "@/hooks/useBuscarEquipos";
 import { createPrestamo } from "@/services/prestamo.service";
 import { styles } from "@/assets/styles/prestamo.styles";
 import { BackIcon } from "@/components/Icons";
+import { registrarActividad } from "@/services/actividad.service";
+import { actualizarEstadoEquipo } from "@/services/equipos.service";
 
 export default function CrearPrestamoScreen() {
   const router = useRouter();
@@ -45,6 +47,11 @@ export default function CrearPrestamoScreen() {
       alert(res.message);
       return;
     }
+
+    await actualizarEstadoEquipo(token, selectedEquipo.id_equipo, 2);
+
+    const detalle = `Registró préstamo de ${selectedEquipo.nombre} a ${selectedPrestatario.apellido}, ${selectedPrestatario.nombre}`;
+    await registrarActividad(token,detalle);
 
     alert("Préstamo registrado con éxito");
     router.push("/(root)/(tabs)/prestamos");

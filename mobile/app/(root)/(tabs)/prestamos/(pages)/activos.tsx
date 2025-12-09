@@ -7,7 +7,7 @@ import { useAuth } from "@/context/AuthContext";
 import { styles } from "@/assets/styles/prestamo.styles";
 import { formatDate } from "@/lib/utils";
 import { BackIcon } from "@/components/Icons";
-
+import { registrarActividad } from "@/services/actividad.service";
 export default function PrestamosActivosScreen() {
   const { token } = useAuth();
   const [items, setItems] = useState([]);
@@ -32,7 +32,7 @@ export default function PrestamosActivosScreen() {
   }, [token]);
 
   if (loading) return <PageLoader />;
-  const handleDevolver = async (id_prestamo) => {
+  const handleDevolver = async (prestamo) => {
     Alert.alert(
       "Confirmar devolución",
       "¿Seguro que el equipo fue devuelto?",
@@ -41,20 +41,29 @@ export default function PrestamosActivosScreen() {
         {
           text: "Sí, devolver",
           onPress: async () => {
-            try {
-              const ok = await devolverPrestamo(id_prestamo, token);
+            try {  
+              const ok = await devolverPrestamo(prestamo.id_prestamo, token);
               if (ok) {
-              
-                setItems(prev => prev.filter(p => p.id_prestamo !== id_prestamo));
+                setItems(prev =>
+                  prev.filter(p => p.id_prestamo !== prestamo.id_prestamo)
+                );
               }
             } catch (error) {
               Alert.alert("Error", "No se pudo devolver el préstamo");
+            }
+  
+            try {
+              const detalle = `Registró devolución de ${prestamo.equipo} de ${prestamo.prestatario}`;
+              await registrarActividad(token, detalle);
+            } catch (error) {
+              console.log("Error registrando actividad:", error);
             }
           },
         },
       ]
     );
   };
+  
 
    if (!items.length) {
     return (
@@ -89,7 +98,7 @@ export default function PrestamosActivosScreen() {
           </View>
             <TouchableOpacity
               style={styles.returnButton}
-              onPress={() => handleDevolver(p.id_prestamo)}
+              onPress={() => handleDevolver(p)}
             >
                 <BackIcon style={styles.returnButtonText}/>
             </TouchableOpacity>

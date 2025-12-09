@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { buscarEquipos } from "@/services/equipos.service";
+import { getEquiposActivos } from "@/services/equipos.service";
 
 export function useBuscarEquipos(token, query) {
   const [results, setResults] = useState([]);
@@ -11,7 +11,7 @@ export function useBuscarEquipos(token, query) {
     }
 
     const timeout = setTimeout(async () => {
-      const data = await buscarEquipos(token, query);
+      const data = await getEquiposActivos(token, query);
       setResults(data);
     }, 300);
 
