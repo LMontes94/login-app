@@ -19,7 +19,7 @@ class ActividadService {
     static async crearActividad({ id_usuario, detalle }) {
         await db.query(
             `
-            INSERT INTO Actividad (id_usuario, detalle, fecha, estado)
+            INSERT INTO actividad (id_usuario, detalle, fecha, estado)
             VALUES (?, ?, NOW(), 1)
             `,
             [id_usuario, detalle]

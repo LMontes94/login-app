@@ -54,7 +54,7 @@ class EquiposService {
         return rows[0].total;
     }
 
-    static async buscarPorNombre(nombre){
+    static async buscarPorNombre(nombre) {
         try {
             const query = `
             SELECT *
@@ -70,6 +70,28 @@ class EquiposService {
             return { ok: false, error };
         }
     };
+
+    static async actualizarEstadoEquipo(id_equipo, nuevoEstado) {
+        try {
+            const [result] = await db.query(
+                "UPDATE equipos SET estado = ? WHERE id_equipo = ?",
+                [nuevoEstado, id_equipo]
+            );
+
+            return result.affectedRows > 0;
+        } catch (error) {
+            throw error;
+        }
+    };
+
+    static async getEquiposActivos() {
+        const search = `%${query || ""}%`;
+        const [rows] = await db.query(
+            "SELECT * FROM equipos WHERE estado = 1 AND nombre LIKE ?",
+            [search]
+        )
+        return rows;
+    }
 }
 
 module.exports = EquiposService;

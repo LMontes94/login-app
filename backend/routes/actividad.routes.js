@@ -1,11 +1,9 @@
 const express = require("express");
 const router = express.Router();
 const ActividadController = require("../src/controllers/actividad.controller");
+const auth = require("../src/middlewares/auth.middleware");
 
-// GET /actividad
 router.get("/all", ActividadController.getAll);
-
-// POST /actividad
-router.post("/create", ActividadController.crear);
+router.post("/registrar", auth, ActividadController.registrar);
 
 module.exports = router;
