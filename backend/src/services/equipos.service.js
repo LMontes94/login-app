@@ -53,6 +53,23 @@ class EquiposService {
         );
         return rows[0].total;
     }
+
+    static async buscarPorNombre(nombre){
+        try {
+            const query = `
+            SELECT *
+            FROM equipos
+            WHERE nombre LIKE ?
+            `;
+
+            const [rows] = await db.query(query, [`%${nombre}%`]);
+
+            return { ok: true, data: rows };
+        } catch (error) {
+            console.error("Error en buscarPorNombre:", error);
+            return { ok: false, error };
+        }
+    };
 }
 
 module.exports = EquiposService;

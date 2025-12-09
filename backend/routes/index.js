@@ -7,6 +7,8 @@ const authRoutes = require("./auth.routes");
 const dashboardRoutes = require("./dashboard.routes");
 const actividadRoutes = require("./actividad.routes");
 const prestamoRoutes = require("./prestamo.routes");
+const prestatarioRoutes = require("./prestatario.routes");
+const equiposRoutes = require("./equipo.routes");
 
 // Unificar rutas
 router.use("/users", usersRoutes);
@@ -15,5 +17,7 @@ router.use("/auth", authRoutes);
 router.use("/dashboard", dashboardRoutes);
 router.use("/actividad", actividadRoutes);
 router.use("/prestamo",prestamoRoutes);
+router.use("/prestatario",prestatarioRoutes);
+router.use("/equipo",equiposRoutes);
 
 module.exports = router;

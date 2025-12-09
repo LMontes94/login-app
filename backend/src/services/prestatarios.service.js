@@ -59,7 +59,7 @@ class PrestatariosService {
         await db.query(
             `UPDATE prestatarios SET 
                 ${fields.map(f => `${f} = ?`).join(",")}
-             WHERE id_prestatario = ?`,
+            WHERE id_prestatario = ?`,
             values
         );
 
@@ -79,6 +79,19 @@ class PrestatariosService {
         );
         return rows[0].total;
     }
+
+    static async buscar(query) {
+        const [rows] = await db.query(`
+            SELECT id_prestatario, nombre, apellido
+                FROM prestatarios
+            WHERE estado = 1
+            AND (nombre LIKE ? OR apellido LIKE ?)
+            LIMIT 10
+            `, [`%${query}%`, `%${query}%`]);
+
+        return rows;
+    }
+
 }
 
 module.exports = PrestatariosService;

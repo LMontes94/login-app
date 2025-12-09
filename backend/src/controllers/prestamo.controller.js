@@ -46,14 +46,14 @@ class PrestamoController {
             ok: true,
             message: "Préstamo devuelto correctamente",
         });
-    } catch (error) {
-        console.error("Error devolver préstamo:", error);
-        return res.status(500).json({
-            ok: false,
-            message: "Error interno",
-        });
+        } catch (error) {
+            console.error("Error devolver préstamo:", error);
+                return res.status(500).json({
+                ok: false,
+                message: "Error interno",
+            });
+        }
     }
-}
 }
 
 

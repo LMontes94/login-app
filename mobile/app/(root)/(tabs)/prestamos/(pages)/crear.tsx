@@ -1,64 +1,132 @@
 import { useState } from "react";
-import { View, Text, TextInput, TouchableOpacity  } from "react-native";
-import { createPrestamo } from "@/services/prestamo.service";
+import { View, Text, TouchableOpacity } from "react-native";
 import { useAuth } from "@/context/AuthContext";
-import { styles } from "@/assets/styles/prestamo.styles";
 import { useRouter } from "expo-router";
+import BuscarPrestatario from "@/components/prestamos/BuscarPrestatario";
+import ResultadosPrestatario from "@/components/prestamos/ResultadosPrestatarios";
+import SeleccionarEquipo from "@/components/prestamos/SeleccionarEquipo";
+import ResultadosEquipos from "@/components/prestamos/ResultadosEquipo"
+import { useBuscarPrestatarios } from "@/hooks/useBuscarPrestatario";
+import { useBuscarEquipos } from "@/hooks/useBuscarEquipos";
+import { createPrestamo } from "@/services/prestamo.service";
+import { styles } from "@/assets/styles/prestamo.styles";
 import { BackIcon } from "@/components/Icons";
-export default function CrearPrestamoScreen() {
-  const { token } = useAuth();
-  const [idPrestatario, setIdPrestatario] = useState("");
-  const [idEquipo, setIdEquipo] = useState("");
-  const [step, setStep] = useState(1);
-  const router = useRouter();
 
-  const confirmar = async () => {
-    await createPrestamo(token, {
-      id_prestatario: idPrestatario,
-      id_equipo: idEquipo,
+export default function CrearPrestamoScreen() {
+  const router = useRouter();
+  const { token } = useAuth();
+
+  const [step, setStep] = useState(1);
+
+  const [queryPrestatario, setQueryPrestatario] = useState("");
+  const prestatarios = useBuscarPrestatarios(token, queryPrestatario);
+  const [selectedPrestatario, setSelectedPrestatario] = useState(null);
+
+  const [queryEquipo, setQueryEquipo] = useState("");
+  const equipos = useBuscarEquipos(token, queryEquipo);
+  const [selectedEquipo, setSelectedEquipo] = useState(null);
+
+  const confirmarPrestamo = async () => {
+    if (!selectedPrestatario) {
+    alert("Debe seleccionar un prestatario antes de continuar.");
+    return;
+  }
+
+  if (!selectedEquipo) {
+    alert("Debe seleccionar un equipo antes de confirmar el préstamo.");
+    return;
+  }
+    const res = await createPrestamo(token, {
+      id_prestatario: selectedPrestatario.id_prestatario,
+      id_equipo: selectedEquipo.id_equipo,
     });
-    alert("Préstamo registrado");
-    setIdEquipo("");
-    setIdPrestatario("");
-    setStep(1);
+
+    if (!res.ok) {
+      alert(res.message);
+      return;
+    }
+
+    alert("Préstamo registrado con éxito");
+    router.push("/(root)/(tabs)/prestamos");
   };
 
   return (
     <View style={styles.container}>
+      {/* Paso 1 */}
       {step === 1 && (
-        <>         
-          <Text style={styles.titleText}>Ingresá el ID del prestatario:</Text>
-          <TextInput
-            value={idPrestatario}
-            onChangeText={setIdPrestatario}
-            keyboardType="numeric"
-            style={styles.inputPrestamo}
+        <>
+          <BuscarPrestatario
+            value={queryPrestatario}
+            onChange={setQueryPrestatario}
           />
-          <View style={styles.containerButtons}>
-            <TouchableOpacity style={styles.backButton} onPress={() => router.push("/(root)/(tabs)/prestamos")} >
-                <Text style={styles.backButtonText}><BackIcon/></Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.backButton} onPress={() => setStep(2)} >
-              <Text style={styles.backButtonText}>Continuar</Text>
-            </TouchableOpacity>
-          </View>
+
+          <ResultadosPrestatario
+            results={prestatarios}
+            onSelect={(p) => {
+              setSelectedPrestatario(p);
+              setStep(2);
+            }}
+          />
+
+          <TouchableOpacity
+            style={styles.backButton}
+            onPress={() => router.push("/(root)/(tabs)/prestamos")}
+          >
+            <Text style={styles.backButtonText}><BackIcon /></Text>
+          </TouchableOpacity>
         </>
       )}
 
+      {/* Paso 2 */}
       {step === 2 && (
         <>
-          <Text style={styles.titleText}>Ingresá el ID del equipo:</Text>
-          <TextInput
-            value={idEquipo}
-            onChangeText={setIdEquipo}
-            keyboardType="numeric"
-            style={styles.inputPrestamo}
+          <Text style={styles.titleText}>
+            Prestatario seleccionado:{" "}
+            {selectedPrestatario?.nombre} {selectedPrestatario?.apellido}
+          </Text>
+
+          <SeleccionarEquipo
+            value={queryEquipo}
+            onChange={setQueryEquipo}
           />
-          <TouchableOpacity style={styles.backButton} onPress={confirmar} >
+
+          <ResultadosEquipos
+            results={equipos}
+            onSelect={(eq) => {
+              setSelectedEquipo(eq);
+              setStep(3);
+            }}
+          />
+
+          <TouchableOpacity
+            style={styles.backButton}
+            onPress={() => setStep(1)}
+          >
+            <Text style={styles.backButtonText}><BackIcon /></Text>
+          </TouchableOpacity>
+        </>
+      )}
+
+      {/* Paso 3 */}
+      {step === 3 && (
+        <>
+          <Text style={styles.titleText}>Confirmación</Text>
+
+          <Text>Prestatario: {selectedPrestatario.nombre} {selectedPrestatario.apellido}</Text>
+          <Text>Equipo: {selectedEquipo.nombre}</Text>
+
+          <TouchableOpacity
+            style={styles.backButton}
+            onPress={confirmarPrestamo}
+          >
             <Text style={styles.backButtonText}>Confirmar préstamo</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.backButton} onPress={() => setStep(1)} >
-            <Text style={styles.backButtonText}><BackIcon/></Text>
+
+          <TouchableOpacity
+            style={styles.backButton}
+            onPress={() => setStep(2)}
+          >
+            <Text style={styles.backButtonText}><BackIcon /></Text>
           </TouchableOpacity>
         </>
       )}

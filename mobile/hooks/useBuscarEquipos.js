@@ -1,0 +1,22 @@
+import { useState, useEffect } from "react";
+import { buscarEquipos } from "@/services/equipos.service";
+
+export function useBuscarEquipos(token, query) {
+  const [results, setResults] = useState([]);
+
+  useEffect(() => {
+    if (!query || query.length < 2) {
+      setResults([]);
+      return;
+    }
+
+    const timeout = setTimeout(async () => {
+      const data = await buscarEquipos(token, query);
+      setResults(data);
+    }, 300);
+
+    return () => clearTimeout(timeout);
+  }, [query]);
+
+  return results;
+}
