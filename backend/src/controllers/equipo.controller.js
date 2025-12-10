@@ -36,7 +36,7 @@ class EquipoController {
         }
 
         try {
-            const actualizado = await actualizarEstadoEquipo(id, estado);
+            const actualizado = await EquipoService.actualizarEstadoEquipo(id, estado);
 
             if (!actualizado) {
                 return res.status(404).json({ ok: false, message: "Equipo no encontrado" });
@@ -66,6 +66,7 @@ class EquipoController {
             });
         }
     }
+
 }
 
 module.exports = EquipoController;

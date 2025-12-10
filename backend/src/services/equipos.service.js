@@ -84,14 +84,17 @@ class EquiposService {
         }
     };
 
-    static async getEquiposActivos() {
-        const search = `%${query || ""}%`;
+    static async getEquiposActivos(query = "") {
+        const search = `%${query}%`;
+
         const [rows] = await db.query(
             "SELECT * FROM equipos WHERE estado = 1 AND nombre LIKE ?",
             [search]
-        )
+        );
+
         return rows;
     }
+
 }
 
 module.exports = EquiposService;

@@ -17,8 +17,8 @@ export const buscarEquipos = async (token, nombre) => {
 
 export async function actualizarEstadoEquipo(token, id_equipo, estado) {
   try {
-    const res = await fetch(`${API_URL}/equipos/estado/${id_equipo}`, {
-      method: "PATCH",
+    const res = await fetch(`${API_URL}/equipo/estado/${id_equipo}`, {
+      method: "PUT",
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
@@ -38,7 +38,7 @@ export async function actualizarEstadoEquipo(token, id_equipo, estado) {
 
 export async function getEquiposActivos(token, query = "") {
   try {
-    const res = await fetch(`${API_URL}/equipos/activos?q=${encodeURIComponent(query)}`, {
+    const res = await fetch(`${API_URL}/equipo/activos?q=${encodeURIComponent(query)}`, {
       method: "GET",
       headers: {
         "Authorization": `Bearer ${token}`,
@@ -46,12 +46,11 @@ export async function getEquiposActivos(token, query = "") {
     });
 
     const data = await res.json();
-
     if (!res.ok || !data.ok) {
       throw new Error(data.message || "Error obteniendo equipos activos");
     }
 
-    return data.data; // devuelve solo el array de equipos
+    return data.data;
   } catch (error) {
     console.error("EquiposActivosService Error:", error);
     throw error;
