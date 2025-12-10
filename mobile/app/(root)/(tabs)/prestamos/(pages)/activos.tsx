@@ -8,11 +8,15 @@ import { styles } from "@/assets/styles/prestamo.styles";
 import { formatDate } from "@/lib/utils";
 import { BackIcon } from "@/components/Icons";
 import { registrarActividad } from "@/services/actividad.service";
+import { useNotificaciones } from "@/context/NotificacionContext";
+import { actualizarEstadoEquipo } from "@/services/equipos.service";
 export default function PrestamosActivosScreen() {
   const { token } = useAuth();
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const router = useRouter();
+
+  const { agregarNotificacion } = useNotificaciones();
 
   useEffect(() => {
     if (!token) return;
@@ -44,6 +48,7 @@ export default function PrestamosActivosScreen() {
             try {  
               const ok = await devolverPrestamo(prestamo.id_prestamo, token);
               if (ok) {
+                await actualizarEstadoEquipo(token, prestamo.id_equipo, 1);
                 setItems(prev =>
                   prev.filter(p => p.id_prestamo !== prestamo.id_prestamo)
                 );
@@ -55,6 +60,7 @@ export default function PrestamosActivosScreen() {
             try {
               const detalle = `Registró devolución de ${prestamo.equipo} de ${prestamo.prestatario}`;
               await registrarActividad(token, detalle);
+              agregarNotificacion(detalle);
             } catch (error) {
               console.log("Error registrando actividad:", error);
             }

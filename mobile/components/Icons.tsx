@@ -24,3 +24,11 @@ export const ListIcon = (props) =>(
 export const BackIcon = (props) =>(
     <Ionicons name="return-up-back" size={24} color={COLORS} {...props} />
 );
+
+export const BellIcon = (props) => (
+    <FontAwesome name="bell-o" size={24} color={COLORS} {...props}  />
+);
+
+export const MenuIcon = (props) => (
+    <Ionicons name="menu" size={24} color={COLORS} {...props} />
+);

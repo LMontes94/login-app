@@ -3,6 +3,8 @@ import SafeScreen from "@/components/SafeScreen";
 import { StatusBar } from "expo-status-bar";
 import { AuthProvider, useAuth } from "@/context/AuthContext";
 import PageLoader from "@/components/PageLoader";
+import { NotificationProvider } from "@/context/NotificacionContext";
+import { useSetupNotifications } from "@/hooks/useSetupNotifications";
 
 function AppContent() {
   const { loading } = useAuth();
@@ -17,10 +19,14 @@ function AppContent() {
 }
 
 export default function RootLayout() {
+  
+  useSetupNotifications();
   return (
     <AuthProvider>
-      <AppContent />
-      <StatusBar style="dark" />
+      <NotificationProvider>
+        <AppContent />
+        <StatusBar style="dark" />
+      </NotificationProvider>
     </AuthProvider>
   );
 }

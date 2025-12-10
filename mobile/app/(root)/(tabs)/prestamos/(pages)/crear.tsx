@@ -13,6 +13,8 @@ import { styles } from "@/assets/styles/prestamo.styles";
 import { BackIcon } from "@/components/Icons";
 import { registrarActividad } from "@/services/actividad.service";
 import { actualizarEstadoEquipo } from "@/services/equipos.service";
+import { useNotificaciones } from "@/context/NotificacionContext";
+import { enviarNotificacionPushLocal } from "@/lib/notificaciones";
 
 export default function CrearPrestamoScreen() {
   const router = useRouter();
@@ -27,6 +29,7 @@ export default function CrearPrestamoScreen() {
   const [queryEquipo, setQueryEquipo] = useState("");
   const equipos = useBuscarEquipos(token, queryEquipo);
   const [selectedEquipo, setSelectedEquipo] = useState(null);
+  const { agregarNotificacion } = useNotificaciones();
 
   const confirmarPrestamo = async () => {
     if (!selectedPrestatario) {
@@ -50,10 +53,11 @@ export default function CrearPrestamoScreen() {
 
     await actualizarEstadoEquipo(token, selectedEquipo.id_equipo, 2);
 
-    const detalle = `Registró préstamo de ${selectedEquipo.nombre} a ${selectedPrestatario.apellido}, ${selectedPrestatario.nombre}`;
+    const detalle = `Préstamo registrado: de ${selectedEquipo.nombre} a ${selectedPrestatario.apellido}, ${selectedPrestatario.nombre}`;
     await registrarActividad(token,detalle);
 
-    alert("Préstamo registrado con éxito");
+    agregarNotificacion(detalle);
+    await enviarNotificacionPushLocal(detalle);
     router.push("/(root)/(tabs)/prestamos");
   };
 
