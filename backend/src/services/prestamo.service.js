@@ -14,9 +14,10 @@ class PrestamoService {
     }
 
     static async getPrestamosActivos() {
-    const [rows] = await db.query(`
+        const [rows] = await db.query(`
         SELECT 
             p.id_prestamo,
+            p.id_equipo,
             p.fecha,
             CONCAT(u.nombre, ' ', u.apellido) AS usuario,
             CONCAT(pr.nombre, ' ', pr.apellido) AS prestatario,

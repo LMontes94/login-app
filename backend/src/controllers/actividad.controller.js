@@ -16,7 +16,7 @@ class ActividadController {
         try {
             const { detalle } = req.body;
             const id_usuario = req.user.id_usuario;
-            console.log("Detalle enviado:", detalle);
+
             if (!id_usuario || !detalle) {
                 return res.status(400).json({ ok: false, message: "Faltan datos" });
             }
