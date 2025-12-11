@@ -10,6 +10,8 @@ import { BackIcon } from "@/components/Icons";
 import { registrarActividad } from "@/services/actividad.service";
 import { useNotificaciones } from "@/context/NotificacionContext";
 import { actualizarEstadoEquipo } from "@/services/equipos.service";
+import { enviarNotificacionPushLocal } from "@/lib/notificaciones";
+
 export default function PrestamosActivosScreen() {
   const { token } = useAuth();
   const [items, setItems] = useState([]);
@@ -61,6 +63,7 @@ export default function PrestamosActivosScreen() {
               const detalle = `Registró devolución de ${prestamo.equipo} de ${prestamo.prestatario}`;
               await registrarActividad(token, detalle);
               agregarNotificacion(detalle);
+              await enviarNotificacionPushLocal(detalle);
             } catch (error) {
               console.log("Error registrando actividad:", error);
             }

@@ -15,7 +15,8 @@ export function useSetupNotifications() {
                 // Configurar cómo se muestran dentro de la app
                 Notifications.setNotificationHandler({
                     handleNotification: async () => ({
-                        shouldShowAlert: true,
+                        shouldShowBanner: true,
+                        shouldShowList: true,
                         shouldPlaySound: false,
                         shouldSetBadge: false,
                     }),
