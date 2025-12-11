@@ -60,7 +60,7 @@ export const styles = StyleSheet.create({
         color: COLORS.textLight,
     },
     backButton: {
-        marginTop: 5,
+        marginTop: 10,
         backgroundColor: COLORS.primary,
         padding: 20,
         marginBottom: 12,
@@ -103,7 +103,7 @@ export const styles = StyleSheet.create({
         justifyContent: "space-between",
         alignItems: "center",
     },
-    cardInfo:{
-        flex:1,
+    cardInfo: {
+        flex: 1,
     }
 });

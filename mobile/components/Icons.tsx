@@ -32,3 +32,7 @@ export const BellIcon = (props) => (
 export const MenuIcon = (props) => (
     <Ionicons name="menu" size={24} color={COLORS} {...props} />
 );
+
+export const CameraIcon = (props) => (
+    <FontAwesome name="camera" size={24} color={COLORS} {...props} />
+);

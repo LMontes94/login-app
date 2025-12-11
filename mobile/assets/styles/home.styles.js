@@ -368,6 +368,6 @@ export const styles = StyleSheet.create({
         padding: 15,
         borderRadius: 8,
         elevation: 5,
-        width: 150,
+        width: 250,
     }
 });

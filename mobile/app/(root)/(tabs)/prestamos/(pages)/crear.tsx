@@ -10,11 +10,11 @@ import { useBuscarPrestatarios } from "@/hooks/useBuscarPrestatario";
 import { useBuscarEquipos } from "@/hooks/useBuscarEquipos";
 import { createPrestamo } from "@/services/prestamo.service";
 import { styles } from "@/assets/styles/prestamo.styles";
-import { BackIcon } from "@/components/Icons";
 import { registrarActividad } from "@/services/actividad.service";
 import { actualizarEstadoEquipo } from "@/services/equipos.service";
 import { useNotificaciones } from "@/context/NotificacionContext";
 import { enviarNotificacionPushLocal } from "@/lib/notificaciones";
+import BackButton from "@/components/BackButton";
 
 export default function CrearPrestamoScreen() {
   const router = useRouter();
@@ -78,13 +78,7 @@ export default function CrearPrestamoScreen() {
               setStep(2);
             }}
           />
-
-          <TouchableOpacity
-            style={styles.backButton}
-            onPress={() => router.push("/(root)/(tabs)/prestamos")}
-          >
-            <Text style={styles.backButtonText}><BackIcon /></Text>
-          </TouchableOpacity>
+          <BackButton onPress={() => router.push("/(root)/(tabs)/prestamos")} title={"Volver"} />
         </>
       )}
 
@@ -108,13 +102,7 @@ export default function CrearPrestamoScreen() {
               setStep(3);
             }}
           />
-
-          <TouchableOpacity
-            style={styles.backButton}
-            onPress={() => setStep(1)}
-          >
-            <Text style={styles.backButtonText}><BackIcon /></Text>
-          </TouchableOpacity>
+          <BackButton onPress={() => setStep(1)} title={"Volver"} />
         </>
       )}
 
@@ -132,13 +120,7 @@ export default function CrearPrestamoScreen() {
           >
             <Text style={styles.backButtonText}>Confirmar préstamo</Text>
           </TouchableOpacity>
-
-          <TouchableOpacity
-            style={styles.backButton}
-            onPress={() => setStep(2)}
-          >
-            <Text style={styles.backButtonText}><BackIcon /></Text>
-          </TouchableOpacity>
+          <BackButton onPress={() => setStep(2)} />
         </>
       )}
     </View>

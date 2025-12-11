@@ -56,3 +56,16 @@ export async function getEquiposActivos(token, query = "") {
     throw error;
   }
 }
+
+export async function getEquipoById(token, id_equipo) {
+  try {
+    const res = await fetch(`${API_URL}/equipo/${id_equipo}`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    if (!res.ok) throw new Error("Error al obtener el equipo");
+    return await res.json();
+  } catch (error) {
+    console.error("getEquipoById:", error);
+    return null;
+  }
+}

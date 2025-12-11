@@ -1,5 +1,4 @@
 const API_URL = process.env.EXPO_PUBLIC_API_URL;
-
 export async function getPrestamosActivos(token) {
     try {
         const res = await fetch(`${API_URL}/prestamo/activos`, {
@@ -70,3 +69,25 @@ export async function devolverPrestamo(id, token) {
         throw err;
     }
 }
+
+export async function devolverPrestamoPorEquipo(token, id_equipo) {
+    try {
+        const res = await fetch(`${API_URL}/prestamo/devolver/equipo/${id_equipo}`, {
+            method: "POST",
+            headers: {
+                Authorization: `Bearer ${token}`,
+            }
+        });
+
+        const data = await res.json();
+        return data;
+
+    } catch (error) {
+        console.error("devolverPrestamoPorEquipo error:", error);
+        return {
+            ok: false,
+            message: "Error de conexión"
+        };
+    }
+}
+
