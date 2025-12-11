@@ -5,7 +5,8 @@ const EquipoController = require("../src/controllers/equipo.controller");
 const router = express.Router();
 
 router.get("/search", EquipoController.buscarEquipo);
-router.get("/activos", auth,EquipoController.getEquiposActivos);
+router.get("/activos", auth, EquipoController.getEquiposActivos);
 router.put("/estado/:id", EquipoController.cambiarEstadoEquipo);
+router.get("/:id", auth, EquipoController.getEquipoById);
 
 module.exports = router;

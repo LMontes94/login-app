@@ -67,6 +67,12 @@ class EquipoController {
         }
     }
 
+    static async getEquipoById(req, res) {
+        const { id } = req.params;
+        const equipo = await EquipoService.getById(id);
+        if (!equipo) return res.status(404).json({ message: "Equipo no encontrado" });
+        res.json(equipo);
+    }
 }
 
 module.exports = EquipoController;

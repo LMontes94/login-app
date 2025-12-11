@@ -30,27 +30,54 @@ class PrestamoController {
     }
 
     static async devolverPrestamo(req, res) {
-    try {
-        const { id } = req.params;
+        try {
+            const { id } = req.params;
 
-        const ok = await PrestamoService.devolver(id);
+            const ok = await PrestamoService.devolver(id);
 
-        if (!ok) {
-            return res.status(400).json({
-                ok: false,
-                message: "No se pudo devolver el préstamo",
+            if (!ok) {
+                return res.status(400).json({
+                    ok: false,
+                    message: "No se pudo devolver el préstamo",
+                });
+            }
+
+            return res.json({
+                ok: true,
+                message: "Préstamo devuelto correctamente",
             });
-        }
-
-        return res.json({
-            ok: true,
-            message: "Préstamo devuelto correctamente",
-        });
         } catch (error) {
             console.error("Error devolver préstamo:", error);
-                return res.status(500).json({
+            return res.status(500).json({
                 ok: false,
                 message: "Error interno",
+            });
+        }
+    }
+
+    static async devolverPrestamoPorEquipo(req, res) {
+        try {
+            const { id_equipo } = req.params;
+
+            const prestamo = await PrestamoService.devolverPrestamoPorEquipo(id_equipo);
+
+            if (!prestamo) {
+                return res.status(404).json({
+                    ok: false,
+                    message: "No existe un préstamo activo para este equipo",
+                });
+            }
+
+            res.json({
+                ok: true,
+                message: "Préstamo devuelto correctamente",
+                prestamo,
+            });
+        } catch (error) {
+            console.error("Controller devolverPrestamoPorEquipo:", error);
+            res.status(500).json({
+                ok: false,
+                message: "Error al devolver el préstamo",
             });
         }
     }

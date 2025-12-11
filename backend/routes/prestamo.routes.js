@@ -7,5 +7,6 @@ const router = express.Router();
 router.post("/create", auth, PrestamoController.crear);
 router.get("/activos", PrestamoController.activos);
 router.put("/devolver/:id", auth, PrestamoController.devolverPrestamo);
+router.post("/devolver/equipo/:id_equipo", auth, PrestamoController.devolverPrestamoPorEquipo);
 
 module.exports = router;

@@ -47,6 +47,36 @@ class PrestamoService {
         }
     }
 
+    static async getPrestamoActivoPorEquipo(id_equipo) {
+        try {
+            const [rows] = await db.query(
+                "SELECT * FROM prestamos WHERE id_equipo = ? AND estado = 1 LIMIT 1",
+                [id_equipo]
+            );
+
+            return rows.length ? rows[0] : null;
+        } catch (error) {
+            console.error("Error getPrestamoActivoPorEquipo:", error);
+            throw new Error("Error al buscar el préstamo");
+        }
+    }
+
+    static async devolverPrestamoPorEquipo(id_equipo) {
+        try {
+            const prestamo = await PrestamoService.getPrestamoActivoPorEquipo(id_equipo);
+            if (!prestamo) return null;
+
+            await db.query(
+                "UPDATE prestamos SET estado = 0, fecha_devolucion = NOW() WHERE id_prestamo = ?",
+                [prestamo.id_prestamo]
+            );
+
+            return prestamo;
+        } catch (error) {
+            console.error("Error devolverPrestamoPorEquipo:", error);
+            throw new Error("Error al devolver el préstamo");
+        }
+    }
 }
 
 module.exports = PrestamoService;

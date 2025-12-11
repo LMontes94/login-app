@@ -5,5 +5,6 @@ const PrestatarioController = require("../src/controllers/prestatarios.controlle
 const router = express.Router();
 
 router.get("/search", PrestatarioController.buscar);
+router.get("/:id", auth, PrestatarioController.getPrestatarioById);
 
 module.exports = router;
