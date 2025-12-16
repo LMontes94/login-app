@@ -28,6 +28,7 @@ export const styles = StyleSheet.create({
         fontSize: 16,
         marginHorizontal: 10,
         fontWeight: "bold",
+        flexShrink: 1
     },
     icon: {
         color: COLORS.primary,

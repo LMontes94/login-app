@@ -1,9 +1,9 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { useRouter } from "expo-router";
 import { Alert } from "react-native";
 import { playBeep, playError } from "@/components/Sounds";
 import { createPrestamo } from "@/services/prestamo.service";
-import { actualizarEstadoEquipo, getEquipoById } from "@/services/equipos.service";
+import { getEquipoById } from "@/services/equipos.service";
 import { getPrestatarioById } from "@/services/prestatario.service";
 import { registrarActividad } from "@/services/actividad.service";
 import { useNotificaciones } from "@/context/NotificacionContext";
@@ -11,77 +11,99 @@ import { enviarNotificacionPushLocal } from "@/lib/notificaciones";
 
 export default function usePrestamoScanner(token) {
     const router = useRouter();
-    const [step, setStep] = useState("prestatario");
-    const [scanned, setScanned] = useState(false);
 
+    const [step, setStep] = useState("prestatario");
     const [prestatarioId, setPrestatarioId] = useState(null);
-    const [equipoId, setEquipoId] = useState(null);
+
+    const scanLock = useRef(false); // 🔒 lock real
     const { agregarNotificacion } = useNotificaciones();
+
     const resetScan = () => {
-        setScanned(false);
+        scanLock.current = false;
     };
 
     const handleScan = async (data) => {
-        if (scanned) return;
-        setScanned(true);
+        if (scanLock.current) return;
+        scanLock.current = true;
 
-        // sonido de escaneo
         await playBeep();
 
         try {
+            // ===== ESCANEO PRESTATARIO =====
             if (step === "prestatario") {
                 setPrestatarioId(data);
                 setStep("equipo");
-                Alert.alert("Prestatario OK", `ID: ${data}`);
+
+                Alert.alert("Prestatario OK", `ID: ${data}`, [
+                    {
+                        text: "OK",
+                        onPress: () => {
+                            scanLock.current = false; // 🔓 liberar
+                        },
+                    },
+                ]);
+
                 return;
             }
 
-            setEquipoId(data);
-            Alert.alert("Equipo escaneado", `ID: ${data}`);
+            // ===== ESCANEO EQUIPO =====
+            Alert.alert("Equipo escaneado", `ID: ${data}`, [
+                {
+                    text: "Confirmar",
+                    onPress: async () => {
+                        try {
+                            const res = await createPrestamo(token, {
+                                id_prestatario: prestatarioId,
+                                id_equipo: data,
+                            });
 
-            if (!prestatarioId) {
-                await playError();
-                Alert.alert("Error", "No se escaneó un prestatario válido");
-                return;
-            }
+                            if (!res.ok) {
+                                await playError();
+                                Alert.alert("Error", res.message);
+                                scanLock.current = false;
+                                return;
+                            }
 
-            // Crear préstamo
-            const res = await createPrestamo(token, {
-                id_prestatario: prestatarioId,
-                id_equipo: data,
-            });
-            //await actualizarEstadoEquipo(token, data, 2);
+                            const prestatario = await getPrestatarioById(token, prestatarioId);
+                            const equipo = await getEquipoById(token, data);
 
-            const prestatario = await getPrestatarioById(token, prestatarioId);
-            const equipo = await getEquipoById(token, data);
+                            const detalle = `Préstamo registrado: de ${equipo.nombre} a ${prestatario.apellido}, ${prestatario.nombre}`;
 
-            const detalle = `Préstamo registrado: de ${equipo.nombre} a ${prestatario.apellido}, ${prestatario.nombre}`;
-            await registrarActividad(token, detalle);
+                            await registrarActividad(token, detalle);
+                            agregarNotificacion(detalle);
+                            await enviarNotificacionPushLocal(detalle);
 
-            agregarNotificacion(detalle);
-            await enviarNotificacionPushLocal(detalle);
-
-            router.replace("/prestamos");
-            if (!res.ok) {
-                await playError();
-                Alert.alert("Error al crear préstamo", res.message);
-            } else {
-                Alert.alert("Éxito", "Préstamo creado correctamente");
-                setStep("prestatario");
-                setPrestatarioId(null);
-                setEquipoId(null);
-            }
+                            Alert.alert("Éxito", "Préstamo creado correctamente", [
+                                {
+                                    text: "OK",
+                                    onPress: () => {
+                                        setStep("prestatario");
+                                        setPrestatarioId(null);
+                                        scanLock.current = false;
+                                        router.replace("/prestamos");
+                                    },
+                                },
+                            ]);
+                        } catch (err) {
+                            await playError();
+                            console.error(err);
+                            Alert.alert("Error", "Ocurrió un error inesperado");
+                            scanLock.current = false;
+                        }
+                    },
+                },
+            ]);
         } catch (error) {
             await playError();
             console.error("Error handleScan:", error);
             Alert.alert("Error", "Ocurrió un error inesperado");
+            scanLock.current = false;
         }
     };
 
     return {
         step,
-        scanned,
-        resetScan,
         handleScan,
+        resetScan,
     };
 }
