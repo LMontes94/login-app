@@ -6,6 +6,7 @@ const router = express.Router();
 
 router.get("/search", EquipoController.buscarEquipo);
 router.get("/activos", auth, EquipoController.getEquiposActivos);
+router.get('/disponibles',EquipoController.listarEquiposDisponibles);
 router.put("/estado/:id", EquipoController.cambiarEstadoEquipo);
 router.get("/:id", auth, EquipoController.getEquipoById);
 

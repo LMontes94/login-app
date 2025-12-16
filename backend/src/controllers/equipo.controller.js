@@ -73,6 +73,19 @@ class EquipoController {
         if (!equipo) return res.status(404).json({ message: "Equipo no encontrado" });
         res.json(equipo);
     }
+
+    static async listarEquiposDisponibles(req, res) {
+        try {
+            const { search = '' } = req.query;
+            const equipos = await EquipoService.getEquiposDisponibles(search);
+
+            res.status(200).json(equipos);
+
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({ message: 'Error al obtener equipos disponibles' });
+        }
+    }
 }
 
 module.exports = EquipoController;

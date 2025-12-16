@@ -13,6 +13,10 @@ class PrestamoController {
                 id_equipo
             });
 
+            if (!result.ok) {
+                return res.status(400).json(result);
+            }
+
             return res.json(result);
         } catch (error) {
             console.log(error);

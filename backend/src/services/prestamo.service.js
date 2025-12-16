@@ -2,6 +2,15 @@ const db = require("../../config/db");
 
 class PrestamoService {
     static async crearPrestamo({ id_usuario, id_prestatario, id_equipo }) {
+        const prestamoActivo = await PrestamoService.getPrestamoActivoPorEquipo(id_equipo);
+
+        if (prestamoActivo) {
+            return {
+                ok: false,
+                message: "El equipo ya se encuentra prestado",
+            };
+        }
+        
         await db.query(
             `
             INSERT INTO prestamos (id_usuario, id_prestatario, id_equipo, fecha, estado)

@@ -95,6 +95,22 @@ class EquiposService {
         return rows;
     }
 
+    static async getEquiposDisponibles(filtro){
+        const query = `
+            SELECT e.*
+            FROM equipos e
+            WHERE e.nombre LIKE ?
+            AND NOT EXISTS (
+                SELECT 1
+                FROM prestamos p
+                WHERE p.id_equipo = e.id_equipo
+                AND p.estado = 1
+            )
+        `;
+
+        const [rows] = await db.query(query, [`%${filtro}%`]);
+        return rows;
+    }
 }
 
 module.exports = EquiposService;
