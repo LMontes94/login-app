@@ -69,3 +69,22 @@ export async function getEquipoById(token, id_equipo) {
     return null;
   }
 }
+
+export async function getEquiposDisponibles(token, query) {
+  const res = await fetch(
+    `${API_URL}/equipo/disponibles?search=${encodeURIComponent(query)}`,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    }
+  );
+
+  if (!res.ok) {
+    const text = await res.text();
+    throw new Error("Error al obtener equipos disponibles");
+  }
+
+  return await res.json();
+}

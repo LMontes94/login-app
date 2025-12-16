@@ -32,7 +32,7 @@ export default function useDevolucionScanner(token) {
             }
 
             // Actualizar estado del equipo a disponible (1)
-            await actualizarEstadoEquipo(token, id_equipo, 1);
+            //await actualizarEstadoEquipo(token, id_equipo, 1);
 
             // Obtener datos del equipo para notificación
             const equipo = await getEquipoById(token, id_equipo);

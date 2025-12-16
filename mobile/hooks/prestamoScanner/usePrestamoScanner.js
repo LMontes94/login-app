@@ -8,6 +8,7 @@ import { getPrestatarioById } from "@/services/prestatario.service";
 import { registrarActividad } from "@/services/actividad.service";
 import { useNotificaciones } from "@/context/NotificacionContext";
 import { enviarNotificacionPushLocal } from "@/lib/notificaciones";
+
 export default function usePrestamoScanner(token) {
     const router = useRouter();
     const [step, setStep] = useState("prestatario");
@@ -49,7 +50,7 @@ export default function usePrestamoScanner(token) {
                 id_prestatario: prestatarioId,
                 id_equipo: data,
             });
-            await actualizarEstadoEquipo(token, data, 2);
+            //await actualizarEstadoEquipo(token, data, 2);
 
             const prestatario = await getPrestatarioById(token, prestatarioId);
             const equipo = await getEquipoById(token, data);

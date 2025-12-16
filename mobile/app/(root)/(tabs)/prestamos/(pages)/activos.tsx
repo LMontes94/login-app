@@ -50,7 +50,7 @@ export default function PrestamosActivosScreen() {
             try {  
               const ok = await devolverPrestamo(prestamo.id_prestamo, token);
               if (ok) {
-                await actualizarEstadoEquipo(token, prestamo.id_equipo, 1);
+                //await actualizarEstadoEquipo(token, prestamo.id_equipo, 1);
                 setItems(prev =>
                   prev.filter(p => p.id_prestamo !== prestamo.id_prestamo)
                 );

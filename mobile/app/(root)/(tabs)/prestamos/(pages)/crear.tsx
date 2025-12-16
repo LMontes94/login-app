@@ -7,7 +7,8 @@ import ResultadosPrestatario from "@/components/prestamos/ResultadosPrestatarios
 import SeleccionarEquipo from "@/components/prestamos/SeleccionarEquipo";
 import ResultadosEquipos from "@/components/prestamos/ResultadosEquipo"
 import { useBuscarPrestatarios } from "@/hooks/useBuscarPrestatario";
-import { useBuscarEquipos } from "@/hooks/useBuscarEquipos";
+//import { useBuscarEquipos } from "@/hooks/useBuscarEquipos";
+import { useBuscarEquiposDisponibles } from "@/hooks/useBuscarEquiposDisponibles";
 import { createPrestamo } from "@/services/prestamo.service";
 import { styles } from "@/assets/styles/prestamo.styles";
 import { registrarActividad } from "@/services/actividad.service";
@@ -27,7 +28,8 @@ export default function CrearPrestamoScreen() {
   const [selectedPrestatario, setSelectedPrestatario] = useState(null);
 
   const [queryEquipo, setQueryEquipo] = useState("");
-  const equipos = useBuscarEquipos(token, queryEquipo);
+  //const equipos = useBuscarEquipos(token, queryEquipo);
+  const equipos = useBuscarEquiposDisponibles(token, queryEquipo);
   const [selectedEquipo, setSelectedEquipo] = useState(null);
   const { agregarNotificacion } = useNotificaciones();
 
@@ -51,7 +53,7 @@ export default function CrearPrestamoScreen() {
       return;
     }
 
-    await actualizarEstadoEquipo(token, selectedEquipo.id_equipo, 2);
+    //await actualizarEstadoEquipo(token, selectedEquipo.id_equipo, 2);
 
     const detalle = `Préstamo registrado: de ${selectedEquipo.nombre} a ${selectedPrestatario.apellido}, ${selectedPrestatario.nombre}`;
     await registrarActividad(token,detalle);
@@ -120,7 +122,7 @@ export default function CrearPrestamoScreen() {
           >
             <Text style={styles.backButtonText}>Confirmar préstamo</Text>
           </TouchableOpacity>
-          <BackButton onPress={() => setStep(2)} />
+          <BackButton onPress={() => setStep(2)} title={"Volver"} />
         </>
       )}
     </View>
