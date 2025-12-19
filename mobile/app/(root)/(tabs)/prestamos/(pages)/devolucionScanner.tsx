@@ -29,15 +29,6 @@ export default function DevolucionScanner() {
       <StepMessage step="Escanee el equipo a devolver" />
       <BackButton onPress={() => router.push("/(root)/(tabs)/prestamos")} title={"Volver"}/>
       <CameraBlock onScan={handleScan} />
-
-      {scanned && (
-        <TouchableOpacity
-            style={styles.backButton}
-            onPress={resetScan}
-        >
-            <Text style={styles.backButtonText}>Volver a escanear</Text>
-        </TouchableOpacity>
-      )}
     </View>
   );
 }

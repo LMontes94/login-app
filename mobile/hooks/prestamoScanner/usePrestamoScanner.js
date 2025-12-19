@@ -14,15 +14,19 @@ export default function usePrestamoScanner(token) {
 
     const [step, setStep] = useState("prestatario");
     const [prestatarioId, setPrestatarioId] = useState(null);
+    const [scanned, setScanned] = useState(false);
 
-    const scanLock = useRef(false); // 🔒 lock real
+    const scanLock = useRef(false);
     const { agregarNotificacion } = useNotificaciones();
 
     const resetScan = () => {
+        setScanned(false);
         scanLock.current = false;
     };
 
     const handleScan = async (data) => {
+        if (scanned) return;
+        setScanned(true);
         if (scanLock.current) return;
         scanLock.current = true;
 
@@ -105,5 +109,6 @@ export default function usePrestamoScanner(token) {
         step,
         handleScan,
         resetScan,
+        scanned,
     };
 }
